@@ -96,7 +96,9 @@ add_shortcode('m34glossary', 'm34glossary_glossary_order');
 function m34glossary_glossary_order( $query ) {
 	$posts_args = array(
 		'post_type' => M34GLOSSARY_CPT,
-		'nopaging' => true
+		'nopaging' => true,
+		'orderby' => 'title',
+		'order' => 'ASC'
 	);
 	$tax_args = array(
 		'orderby' => 'name',
