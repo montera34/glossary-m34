@@ -52,10 +52,10 @@ function m34glossary_create_post_type() {
 		'publicly_queryable' => true,
 		'exclude_from_search' => true,
 		'menu_position' => 5,
-		//'menu_icon' => get_template_directory_uri() . '/images/quincem-dashboard-pt-badge.png',
+		'menu_icon' => plugins_url( '/images/m34gloss-dashboard-pt.png' , __FILE__),
 		'hierarchical' => false, // if true this post type will be as pages
 		'query_var' => true,
-		'supports' => array('title', 'editor','excerpt','author','trackbacks','thumbnail'),
+		'supports' => array('title', 'editor','excerpt','author','trackbacks'),
 		'rewrite' => array('slug'=>M34GLOSSARY_CPT,'with_front'=>false),
 		'can_export' => true,
 		'_builtin' => false,
@@ -109,14 +109,14 @@ function m34glossary_glossary_order( $query ) {
 		foreach ( $term_letters as $term_letter ) {
 			$term_letter_id = $term_letter->term_id;
 		}
-		//if ( $term_groups != FALSE ) {
+		if ( is_array($term_groups) ) {
 			$term_groups_out = " [";
 			foreach ( $term_groups as $term_group ) {
 				$term_group_perma = get_term_link($term_group);
 				$term_groups_out .= "<a href='" .$term_group_perma. "' title='" .sprintf( __('View all the terms in %s','m34glossary'),$term_group->name ). "'>" .$term_group->name. "</a>, ";
 			}
 			$term_groups_out = preg_replace( '/, $/', ']', $term_groups_out );
-		//} else { $term_groups_out = ""; }
+		} else { $term_groups_out = ""; }
 		$term_tit = get_the_title($term->ID);
 		$term_perma = get_permalink($term->ID);
 		$term_content = apply_filters( 'the_content', $term->post_content );
