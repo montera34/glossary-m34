@@ -84,13 +84,6 @@ function m34glossary_build_taxonomies() {
 	) );
 } /* END register taxonomies */
 
-/* modify loop in glossary CPT archives */
-function m34glossary_loop_filter( $query ) {
-	if ( is_post_type_archive(M34GLOSSARY_CPT) && !is_admin() && $query->is_main_query() ) {
-		$query->set( 'nopaging', 'true' );
-	}
-} /* END modify loop in glossary CPT archives */
-
 /* modify posts order in glossary CPT archives */
 add_shortcode('m34glossary', 'm34glossary_glossary_order');
 function m34glossary_glossary_order( $query ) {
