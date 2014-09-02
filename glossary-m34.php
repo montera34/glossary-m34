@@ -14,9 +14,19 @@ $tax1 = "letter"; // letters taxonomy name and slug for permalinks
 $tax2 = "group"; // groups taxonomy name and slug for permalinks
 /* STOP EDIT */
 
-if (!defined('M34GLOSSARY_CPT')) define('M34GLOSSARY_CPT', $cpt);
-if (!defined('M34GLOSSARY_TAX_LETTER')) define('M34GLOSSARY_TAX_LETTER', $tax1);
-if (!defined('M34GLOSSARY_TAX_GROUP')) define('M34GLOSSARY_TAX_GROUP', $tax2);
+// plugin main activation function
+//register_activation_hook( __FILE__, 'm34glossary_activate' );
+//function m34glossary_activate() {
+
+	if (!defined('M34GLOSSARY_CPT')) define('M34GLOSSARY_CPT', $cpt);
+	if (!defined('M34GLOSSARY_TAX_LETTER')) define('M34GLOSSARY_TAX_LETTER', $tax1);
+	if (!defined('M34GLOSSARY_TAX_GROUP')) define('M34GLOSSARY_TAX_GROUP', $tax2);
+
+	// Custom post type and taxonomies
+	add_action( 'init', 'm34glossary_create_post_type', 0 );
+	add_action( 'init', 'm34glossary_build_taxonomies', 0 );
+
+//} // END plugin main activation function
 
 /* Create CPT glossary */
 function m34glossary_create_post_type() {
@@ -74,4 +84,62 @@ function m34glossary_build_taxonomies() {
 	) );
 } /* END register taxonomies */
 
+/* modify loop in glossary CPT archives */
+function m34glossary_loop_filter( $query ) {
+	if ( is_post_type_archive(M34GLOSSARY_CPT) && !is_admin() && $query->is_main_query() ) {
+		$query->set( 'nopaging', 'true' );
+	}
+} /* END modify loop in glossary CPT archives */
+
+/* modify posts order in glossary CPT archives */
+add_shortcode('m34glossary', 'm34glossary_glossary_order');
+function m34glossary_glossary_order( $query ) {
+	$posts_args = array(
+		'post_type' => M34GLOSSARY_CPT,
+		'nopaging' => true
+	);
+	$tax_args = array(
+		'orderby' => 'name',
+		'order' => 'ASC',
+	);
+	$glossary_posts = get_posts($posts_args);
+	$letters = get_terms(M34GLOSSARY_TAX_LETTER,$tax_args);
+
+	foreach ( $letters as $letter ) {
+		$glossary_reordered[$letter->term_id]['letter_tit'] = $letter->name;
+	}
+	foreach ( $glossary_posts as $term ) {
+		$term_letters = get_the_terms($term->ID,M34GLOSSARY_TAX_LETTER);
+		$term_groups = get_the_terms($term->ID,M34GLOSSARY_TAX_GROUP);
+		foreach ( $term_letters as $term_letter ) {
+			$term_letter_id = $term_letter->term_id;
+		}
+		//if ( $term_groups != FALSE ) {
+			$term_groups_out = " [";
+			foreach ( $term_groups as $term_group ) {
+				$term_group_perma = get_term_link($term_group);
+				$term_groups_out .= "<a href='" .$term_group_perma. "' title='" .sprintf( __('View all the terms in %s'),$term_group->name ). "'>" .$term_group->name. "</a>, ";
+			}
+			$term_groups_out = preg_replace( '/, $/', ']', $term_groups_out );
+		//} else { $term_groups_out = ""; }
+		$term_tit = get_the_title($term->ID);
+		$term_perma = get_permalink($term->ID);
+		$term_content = apply_filters( 'the_content', $term->post_content );
+		$glossary_reordered[$term_letter_id][$term->ID] = "<a href='" .$term_perma. "' title='". $term_tit. "'>". $term_tit. "</a>" .$term_groups_out;
+	} // END foreach $glossary
+
+	$glossary_out = "";
+	foreach ( $glossary_reordered as $letter_posts ) {
+		$count = 0;
+		$glossary_out .= "<section>";
+		foreach ( $letter_posts as $term_out ) {
+			if ( $count == 0 ) { $glossary_out .= "<header><h2 class='m34gloss-sec-tit'>" .$term_out. "</h2>"; }
+			else { $glossary_out .= "<div class='m34gloss-term'>" .$term_out. "</div>"; }
+			$count++;
+		}
+		$glossary_out .= "</section>";
+	}
+	return $glossary_out;
+
+} /* END modify loop in glossary CPT archives */
 ?>
