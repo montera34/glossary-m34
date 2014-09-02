@@ -113,7 +113,7 @@ function m34glossary_glossary_order( $query ) {
 			$term_groups_out = " [";
 			foreach ( $term_groups as $term_group ) {
 				$term_group_perma = get_term_link($term_group);
-				$term_groups_out .= "<a href='" .$term_group_perma. "' title='" .sprintf( __('View all the terms in %s'),$term_group->name ). "'>" .$term_group->name. "</a>, ";
+				$term_groups_out .= "<a href='" .$term_group_perma. "' title='" .sprintf( __('View all the terms in %s','m34glossary'),$term_group->name ). "'>" .$term_group->name. "</a>, ";
 			}
 			$term_groups_out = preg_replace( '/, $/', ']', $term_groups_out );
 		//} else { $term_groups_out = ""; }
@@ -137,4 +137,23 @@ function m34glossary_glossary_order( $query ) {
 	return $glossary_out;
 
 } /* END modify loop in glossary CPT archives */
+
+/* output letters list */
+add_shortcode('m34glossary_letters', 'm34glossary_letters');
+function m34glossary_letters() {
+	$letters = get_terms( M34GLOSSARY_TAX_LETTER );
+	if ( is_array($letters) ) {
+		$letters_out = "<nav><ul class='m34gloss-letters-nav'>";
+		foreach ( $letters as $letter ) {
+			$letter_perma = get_term_link($letter);
+			$letters_out .= "<li class='m34gloss-letter'><a href='" .$letter_perma. "'>" .$letter->name. "</a></li>";
+
+		}
+		$letters_out .= "</ul></nav>";
+	} else {
+		$letters_out = "<div>" .__('There is no letters in the glossary or they have no terms. Before using this shortcode, please, create some terms and letters.','m34glossary' ). "</div>";
+	}
+	return $letters_out;
+}
+/* END output letters list */
 ?>
