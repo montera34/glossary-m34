@@ -76,18 +76,26 @@ function m34glossary_create_post_type() {
 function m34glossary_build_taxonomies() {
 
 	register_taxonomy( M34GLOSSARY_TAX_LETTER, array(M34GLOSSARY_CPT), array(
+		'labels' => array(
+			'name' => __( 'Letters','m34glossary' ),
+			'singular_name' => __( 'Letter','m34glossary' ),
+		),
 		'hierarchical' => true,
-		'label' => __( 'Letter','m34glossary' ),
-		'name' => __( 'Letters','m34glossary' ),
+		'label' => __( 'Letters','m34glossary' ),
+		'name' => M34GLOSSARY_TAX_LETTER,
 		'query_var' => M34GLOSSARY_TAX_LETTER,
 		'rewrite' => array( 'slug' => M34GLOSSARY_TAX_LETTER, 'with_front' => false ),
 		'show_admin_column' => true
 	) );
 
 	register_taxonomy( M34GLOSSARY_TAX_GROUP, array(M34GLOSSARY_CPT), array(
+		'labels' => array(
+			'name' => __( 'Groups','m34glossary' ),
+			'singular_name' => __( 'Group','m34glossary' ),
+		),
 		'hierarchical' => true,
-		'label' => __( 'Group','m34glossary' ),
-		'name' => __( 'Groups','m34glossary' ),
+		'label' => __( 'Groups','m34glossary' ),
+		'name' => M34GLOSSARY_TAX_GROUP,
 		'query_var' => M34GLOSSARY_TAX_GROUP,
 		'rewrite' => array( 'slug' => M34GLOSSARY_TAX_GROUP, 'with_front' => false ),
 		'show_admin_column' => true
@@ -166,6 +174,26 @@ function m34glossary_letters() {
 	return $letters_out;
 }
 /* END output letters list */
+
+/* output groups list */
+add_shortcode('m34glossary_groups', 'm34glossary_groups');
+function m34glossary_groups() {
+	$groups = get_terms( M34GLOSSARY_TAX_GROUP );
+	if ( is_array($groups) ) {
+		$tax = get_taxonomy(M34GLOSSARY_TAX_GROUP);
+		$groups_out = "<nav><strong>" .$tax->labels->name. "</strong><ul class='m34gloss-groups-nav'>";
+		foreach ( $groups as $group ) {
+			$group_perma = get_term_link($group);
+			$groups_out .= "<li class='m34gloss-group'><a href='" .$group_perma. "'>" .$group->name. "</a></li>";
+
+		}
+		$groups_out .= "</ul></nav>";
+	} else {
+		$groups_out = "<div>" .__('There is no groups in the glossary or they have no terms. Before using this shortcode, please, create some terms and groups.','m34glossary' ). "</div>";
+	}
+	return $groups_out;
+}
+/* END output groups list */
 
 /* glossary loops filters */
 function m34glossary_loop_filters( $query ) {

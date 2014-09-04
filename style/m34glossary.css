@@ -15,3 +15,20 @@
 .m34gloss-letters-nav li a:hover {
 	background-color: #5fbcd3;
 }
+.m34gloss-groups-nav {
+	margin: 0 0 0 12px;
+	padding: 0;
+	list-style: none outside none;
+	display: inline-block;
+}
+.m34gloss-groups-nav li {
+	display: inline-block;
+}
+.m34gloss-groups-nav li a {
+	margin-right: 12px;
+	color: #87cdde;
+	font-weight: normal;
+}
+.m34gloss-groups-nav li a:hover {
+	color: #5fbcd3;
+}
