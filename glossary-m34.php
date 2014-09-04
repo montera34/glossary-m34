@@ -28,7 +28,15 @@ $tax2 = "group"; // groups taxonomy name and slug for permalinks
 
 	// loops filters
 	add_filter( 'pre_get_posts', 'm34glossary_loop_filters' );
+
+	/* Load JavaScript and styles */
+	add_action( 'wp_enqueue_scripts', 'm34glossary_scripts_styles' );
 //} // END plugin main activation function
+
+// Register styles and scripts
+function m34glossary_scripts_styles() {
+	wp_enqueue_style( 'm34glossary-css',plugins_url( 'style/m34glossary.css' , __FILE__) );
+} // END register scripts and styles
 
 /* Create CPT glossary */
 function m34glossary_create_post_type() {

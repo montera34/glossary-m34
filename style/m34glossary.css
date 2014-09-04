@@ -1,0 +1,17 @@
+.m34gloss-letters-nav {
+	margin: 0;
+	padding: 0;
+	list-style: none outside none;
+}
+.m34gloss-letters-nav li {
+	display: inline-block;
+}
+.m34gloss-letters-nav li a {
+	padding: 6px;
+	margin-right: 6px;
+	background-color: #87cdde;
+	color: #fff;
+}
+.m34gloss-letters-nav li a:hover {
+	background-color: #5fbcd3;
+}
