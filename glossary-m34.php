@@ -47,7 +47,7 @@ function m34glossary_create_post_type() {
 			'parent' => __( 'Parent','m34glossary' )
 		),
 		'description' => '',
-		'has_archive' => true,
+		'has_archive' => false,
 		'public' => true,
 		'publicly_queryable' => true,
 		'exclude_from_search' => true,
