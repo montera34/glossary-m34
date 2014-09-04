@@ -26,6 +26,8 @@ $tax2 = "group"; // groups taxonomy name and slug for permalinks
 	add_action( 'init', 'm34glossary_create_post_type', 0 );
 	add_action( 'init', 'm34glossary_build_taxonomies', 0 );
 
+	// loops filters
+	add_filter( 'pre_get_posts', 'm34glossary_loop_filters' );
 //} // END plugin main activation function
 
 /* Create CPT glossary */
@@ -156,4 +158,15 @@ function m34glossary_letters() {
 	return $letters_out;
 }
 /* END output letters list */
+
+/* glossary loops filters */
+function m34glossary_loop_filters( $query ) {
+	if ( !is_admin() && is_tax(M34GLOSSARY_TAX_LETTER) && $query->is_main_query()
+	|| !is_admin() && is_tax(M34GLOSSARY_TAX_GROUP) && $query->is_main_query() ) {
+		$query->set( 'posts_per_page','10');
+		$query->set( 'order','ASC');
+		$query->set( 'orderby','title');
+		$query->set( 'post_type',M34GLOSSARY_CPT);
+	}
+} /* END glossary loops filters */
 ?>
