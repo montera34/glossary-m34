@@ -2,11 +2,13 @@
 /*
 Plugin Name: Glossary m34
 Description: This plugin allows you to create a glossary of terms and to insert it in your website via shortcodes.
-Version: 0.1
+Version: 0.2
 Author: montera34
-Author URI: http://montera34.com
+Author URI: https://montera34.com
 License: GPLv2+
 */
+
+$ver = '0.2';
 
 /* EDIT THIS VARS TO CONFIG THE PLUGIN */
 $cpt = "glossary"; // custom post type name and slug for permalinks
@@ -35,7 +37,7 @@ $tax2 = "group"; // groups taxonomy name and slug for permalinks
 
 // Register styles and scripts
 function m34glossary_scripts_styles() {
-	wp_enqueue_style( 'm34glossary-css',plugins_url( 'style/m34glossary.css' , __FILE__) );
+	wp_enqueue_style( 'm34glossary-css',plugins_url( 'style/m34glossary.css' , __FILE__,array(),$ver,'all') );
 } // END register scripts and styles
 
 /* Create CPT glossary */
