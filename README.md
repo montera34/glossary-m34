@@ -28,6 +28,7 @@ This can be changed in lines 12, 13 and 14 of [glossary-m34.php](https://github.
 
 Glossary can be outputed anywhere in your WordPress site using shortcodes.
 
++ [m34glossary] outputs list of terms ordered by letters
 + [m34glossary_letters] outputs letters list
 + [m34glossary_groups] outputs groups list
 
